@@ -25,8 +25,8 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
   { href: "/opportunities", label: "Opportunities", icon: Briefcase },
   { href: "/ranker", label: "AI Ranker", icon: Bot },
-  { href: "/earnings", label: "Earnings", icon: DollarSign, disabled: true }, // Example disabled
-  { href: "/reports", label: "Reports", icon: BarChart3, disabled: true },
+  { href: "/earnings", label: "Earnings", icon: DollarSign }, 
+  { href: "/reports", label: "Reports", icon: BarChart3 },
 ];
 
 const bottomNavItems = [
