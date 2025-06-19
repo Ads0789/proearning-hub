@@ -12,10 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CreditCard, LogOut, Settings, User, Bell } from "lucide-react";
+import { CreditCard, LogOut, Settings, User, Bell, Sun, Moon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from 'react';
+import { useTheme } from "next-themes";
 
 
 // This is a placeholder. In a real app, you'd get this from your auth context/session.
@@ -62,6 +63,13 @@ const useNotifications = () => {
 export function UserNav() {
   const user = useUser();
   const { notifications, unreadCount, markAsRead } = useNotifications();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   if (!user) {
     return (
@@ -79,8 +87,32 @@ export function UserNav() {
     return name.substring(0, 2).toUpperCase();
   }
 
+  if (!mounted) {
+    // Render a placeholder or null until theme is resolved to avoid hydration mismatch
+    return (
+        <div className="flex items-center space-x-4">
+            <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div> {/* Placeholder for theme toggle */}
+            <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div> {/* Placeholder for bell icon */}
+            <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div> {/* Placeholder for avatar */}
+        </div>
+    );
+  }
+
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-2 sm:space-x-4">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+        aria-label="Toggle theme"
+      >
+        {resolvedTheme === "dark" ? (
+          <Sun className="h-5 w-5" />
+        ) : (
+          <Moon className="h-5 w-5" />
+        )}
+      </Button>
+      
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
